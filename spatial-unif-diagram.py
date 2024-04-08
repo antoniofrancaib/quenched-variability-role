@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
-from common_utils import nonlinearity
+from common_utils import nonlinearity, r_01, r_02, r_03, r_04
 
 def dr_dt(t, r, w0, I_0):
     return -r + nonlinearity(w0 * r + I_0)
@@ -9,11 +9,6 @@ def dr_dt(t, r, w0, I_0):
 # IMPONER CONDITIONAL INEQUALITIES CON CODIGO PARA HACERLO TODO MAS PRECISO 
 
 I_0 = 1/2 # try 1/16
-
-r_01 = lambda w0, I_0: (1 - 2 * w0 * I_0 + np.sqrt(1 - 4 * w0 * I_0)) / (2 * w0**2) # UNSTABLE
-r_02 = lambda w0, I_0: (1 - 2 * w0 * I_0 - np.sqrt(1 - 4 * w0 * I_0)) / (2 * w0**2) # STABLE 
-r_03 = lambda w0, I_0: 2*w0 + 2*np.sqrt(w0**2 + I_0 - (3/4)) # STABLE 
-r_04 = lambda w0, I_0: 2*w0 - 2*np.sqrt(w0**2 + I_0 - (3/4))
 
 w01 = np.linspace(1, 5, 100) if I_0 == 0 else np.linspace(1, 1/(4*I_0), 100) if I_0 < 1/4 else None # 0.88 funciona como lower bound
 w02 = np.linspace(-3, 5, 100) if I_0 == 0 else np.linspace(-3, 1/(4*I_0), 100)
