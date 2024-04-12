@@ -1,18 +1,32 @@
 import numpy as np
 from scipy.integrate import solve_ivp
+from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
-from common_utils import nonlinearity, r_01, r_02, r_03, r_04
+from common_utils import nonlinearity, derivative_nonlinearity, r_01, r_02, r_03, r_04
 
 def dr_dt(t, r, w0, I_0):
     return -r + nonlinearity(w0 * r + I_0)
 
 # IMPONER CONDITIONAL INEQUALITIES CON CODIGO PARA HACERLO TODO MAS PRECISO 
+# how can i plot critical w0 if it depends on 1/derivative(w0)
 
-I_0 = 1/2 # try 1/16
+N = 10000
+I_0 = 0.4 # try 1/2 - 1/16
 
-w01 = np.linspace(1, 5, 100) if I_0 == 0 else np.linspace(1, 1/(4*I_0), 100) if I_0 < 1/4 else None # 0.88 funciona como lower bound
-w02 = np.linspace(-3, 5, 100) if I_0 == 0 else np.linspace(-3, 1/(4*I_0), 100)
-w03 = np.linspace(0, 5, 100) #if I_0 > 1 else np.linspace(-5, 0, 100) if I_0 < 1 else None
+equation1 = lambda w0: w0*derivative_nonlinearity(w0 * r_01(w0, I_0) + I_0) - 1 
+equation2 = lambda w0: w0*derivative_nonlinearity(w0 * r_02(w0, I_0) + I_0) - 1 
+equation3 = lambda w0: w0*derivative_nonlinearity(w0 * r_03(w0, I_0) + I_0) - 1 
+
+w0 = np.linspace(-10,10, N)
+
+initial_guess = 0.5 
+w0_solution1 = fsolve(equation1, initial_guess)[0] # there is something with w0[np.argmax(equation1(w0))], find it
+w0_solution2 = fsolve(equation2, initial_guess)[0] # this is equal to 1/4*I0
+w0_solution3 = fsolve(equation3, initial_guess)[0]
+
+w01 = np.linspace(w0_solution1, 5, N) if I_0 == 0 else np.linspace(w0_solution1, 1/(4*I_0), N) if I_0 < 1/4 else None # 0.88 funciona como lower bound
+w02 = np.linspace(-10, 5, N) if I_0 == 0 else np.linspace(-3, 1/(4*I_0), N)
+w03 = np.linspace(w0_solution3, 5, N) #if I_0 > 1 else np.linspace(-5, 0, 100) if I_0 < 1 else None
 
 r_01_num = []
 r_02_num = []
@@ -87,8 +101,11 @@ if I_0 != 0:
     plt.axvline(x=1/(4*I_0), color='red', linestyle='--', label='$\\frac{1}{4I_0} = ' + f'{1/(4*I_0):.2f}$' + ' Vertical Line')
 
 
+"""plt.axvline(x=w0_solution1, color='red', linestyle='--', label='Critical w0 for r01 = ' + f'{w0_solution1}')
+plt.axvline(x=w0_solution2, color='red', linestyle='--', label='Critical w0 for r02 = ' + f'{w0_solution2}')
+plt.axvline(x=w0_solution3, color='red', linestyle='--', label='Critical w0 for r03 = ' + f'{w0_solution3}')"""
 
-plt.title('Plot of r_0 as a function of w0 with Vertical Line at $1/(4I_0)$')
+plt.title('Bifurcation Diagram: r_0 as a function of w0')
 plt.xlabel('w0')
 plt.ylabel('r_0')
 
