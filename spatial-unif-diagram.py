@@ -13,18 +13,20 @@ def dr_dt(t, r, w0, I_0):
 N = 10000
 I_0 = 0.4 # try 1/2 - 1/16
 
-equation1 = lambda w0: w0*derivative_nonlinearity(w0 * r_01(w0, I_0) + I_0) - 1 
-equation2 = lambda w0: w0*derivative_nonlinearity(w0 * r_02(w0, I_0) + I_0) - 1 
-equation3 = lambda w0: w0*derivative_nonlinearity(w0 * r_03(w0, I_0) + I_0) - 1 
+def find_critical_w0(r_func, I_0, initial_guess=0.5):
+
+    equation = lambda w0: w0 * derivative_nonlinearity(w0 * r_func(w0, I_0) + I_0) - 1
+
+    critical_w0 = fsolve(equation, initial_guess)[0]
+    return critical_w0
+
+critical_r01 = find_critical_w0(r_01, I_0)
+w0_solution2 = find_critical_w0(r_02, I_0)
+w0_solution3 = find_critical_w0(r_03, I_0)
 
 w0 = np.linspace(-10,10, N)
 
-initial_guess = 0.5 
-w0_solution1 = fsolve(equation1, initial_guess)[0] # there is something with w0[np.argmax(equation1(w0))], find it
-w0_solution2 = fsolve(equation2, initial_guess)[0] # this is equal to 1/4*I0
-w0_solution3 = fsolve(equation3, initial_guess)[0]
-
-w01 = np.linspace(w0_solution1, 5, N) if I_0 == 0 else np.linspace(w0_solution1, 1/(4*I_0), N) if I_0 < 1/4 else None # 0.88 funciona como lower bound
+w01 = np.linspace(critical_r01, 5, N) if I_0 == 0 else np.linspace(critical_r01, 1/(4*I_0), N) if I_0 < 1/4 else None # 0.88 funciona como lower bound
 w02 = np.linspace(-10, 5, N) if I_0 == 0 else np.linspace(-3, 1/(4*I_0), N)
 w03 = np.linspace(w0_solution3, 5, N) #if I_0 > 1 else np.linspace(-5, 0, 100) if I_0 < 1 else None
 
@@ -101,9 +103,9 @@ if I_0 != 0:
     plt.axvline(x=1/(4*I_0), color='red', linestyle='--', label='$\\frac{1}{4I_0} = ' + f'{1/(4*I_0):.2f}$' + ' Vertical Line')
 
 
-"""plt.axvline(x=w0_solution1, color='red', linestyle='--', label='Critical w0 for r01 = ' + f'{w0_solution1}')
-plt.axvline(x=w0_solution2, color='red', linestyle='--', label='Critical w0 for r02 = ' + f'{w0_solution2}')
-plt.axvline(x=w0_solution3, color='red', linestyle='--', label='Critical w0 for r03 = ' + f'{w0_solution3}')"""
+plt.axvline(x=critical_r01, color='red', linestyle='--', label='Critical w0 for r01 = ' + f'{critical_r01}')
+plt.axvline(x=w0_solution2, color='green', linestyle='--', label='Critical w0 for r02 = ' + f'{w0_solution2}')
+plt.axvline(x=w0_solution3, color='black', linestyle='--', label='Critical w0 for r03 = ' + f'{w0_solution3}')
 
 plt.title('Bifurcation Diagram: r_0 as a function of w0')
 plt.xlabel('w0')

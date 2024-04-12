@@ -4,17 +4,14 @@ from scipy.integrate import solve_ivp
 from scipy.optimize import fsolve
 from common_utils import dr_dt, r_01, r_02, r_03, nonlinearity, derivative_nonlinearity
 
-def apply_mask(w0, I_0, r_func, mask_type=1):
+def apply_mask(w0, I_0, r_func, tolerance=1e-4):
     r_values = r_func(w0, I_0)
-    if mask_type == 1:
-        mask = (0 <= w0 * r_values + I_0) & (w0 * r_values + I_0 <= 1)
-    elif mask_type == 2:
-        mask = w0 * r_values + I_0 > 1
-    else:
-        raise ValueError("Invalid mask_type specified. Use 1 or 2.")
-
+    mask = np.isclose(r_values, nonlinearity(w0 * r_values + I_0), atol=tolerance)
+    
     r_values_filtered = np.where(mask, r_values, np.nan)
-    return w0, r_values_filtered
+    w0_filtered = np.where(mask, w0, np.nan)  
+
+    return w0_filtered, r_values_filtered
 
 
 def select_and_solve(w0, r_filtered, I_0, func):
@@ -37,7 +34,7 @@ def select_and_solve(w0, r_filtered, I_0, func):
         
     return w0_selected, r_num
 
-I_0 = 0.01
+I_0 = 0
 N = 10000
 bounds = (-5, 10)
 w0 = np.linspace(bounds[0], bounds[1], N)
@@ -54,10 +51,10 @@ w0_solution3 = fsolve(equation3, initial_guess)[0]
 plt.figure(figsize=(10, 6))
 
 
-for func, mask_type, label, linestyle in [(r_01, 1, '$r_{01}(w_0, I_0)$', '--'), 
-                                          (r_02, 1, '$r_{02}(w_0, I_0)$', '-'), 
-                                          (r_03, 2, '$r_{03}(w_0, I_0)$', '-.')]:
-    w0_filtered, r_filtered = apply_mask(w0, I_0, func, mask_type)
+for func, label, linestyle in [(r_01, '$r_{01}(w_0, I_0)$', '--'), 
+                                          (r_02, '$r_{02}(w_0, I_0)$', '-'), 
+                                          (r_03, '$r_{03}(w_0, I_0)$', '-.')]:
+    w0_filtered, r_filtered = apply_mask(w0, I_0, func)
     plt.plot(w0_filtered, r_filtered, label=label, linestyle=linestyle)
 
     w0_selected, r_num = select_and_solve(w0_filtered, r_filtered, I_0, func)
