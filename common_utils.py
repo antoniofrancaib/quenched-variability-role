@@ -36,6 +36,42 @@ def fixed_point_solver(w0, I0, initial_guess = 0.1): # NUMERICAL APPROACH
     return r0_intersection[0]
 
 
+def find_critical_w0(r_func, I_0, initial_guess=0.5):
+    equation = lambda w0: w0 * derivative_nonlinearity(w0 * r_func(w0, I_0) + I_0) - 1
+    
+    critical_w0 = fsolve(equation, initial_guess)[0]
+    return critical_w0
+
+
+def apply_mask(w0, I_0, r_func, tolerance=1e-4):
+    r_values = r_func(w0, I_0)
+    mask = np.isclose(r_values, nonlinearity(w0 * r_values + I_0), atol=tolerance)
+    
+    r_values_filtered = np.where(mask, r_values, np.nan)
+    w0_filtered = np.where(mask, w0, np.nan)  
+
+    return w0_filtered, r_values_filtered
+
+def select_and_solve(w0, r_filtered, I_0, func):
+    non_nan_indices = ~np.isnan(r_filtered)
+    w0_non_nan = w0[non_nan_indices]
+        
+    if len(w0_non_nan) == 0:
+       return np.array([]), np.array([])  
+        
+    indices_selected = np.linspace(0, len(w0_non_nan) - 1, min(len(w0_non_nan), 10), dtype=int)
+    w0_selected = w0_non_nan[indices_selected]
+    r_num = []
+    t_span = [0, 100]
+    t_eval = np.linspace(t_span[0], t_span[1], 2000)
+        
+    for w0_val in w0_selected:
+        r0 = [func(w0_val, I_0)] 
+        sol = solve_ivp(dr_dt, t_span, r0, args=(w0_val, I_0), t_eval=t_eval, method='RK45')
+        r_num.append(sol.y[0, -1])
+        
+    return w0_selected, r_num
+
 class Ring:
     def __init__(self, L, N, W, external_input, initial_activity_function):
         self.theta = np.linspace(-L, L, N) 
