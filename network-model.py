@@ -2,7 +2,7 @@ import numpy as np
 import random
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
-from common_utils import cos, sin, raised_cosine, nonlinearity
+from common_utils import nonlinearity
 
 np.random.seed(42)
 random.seed(42)
@@ -139,6 +139,3 @@ W_1 = 12 #W_max * ((s*M) / kappa) * a_eta(eta)
 delta_W = 0 # W_max * ((s*M) / kappa)**0.5 * V_eta**0.25
 W = lambda delta_theta: W0 + W_1 * np.cos(delta_theta) + delta_W * np.random.randn()
 
-
-W1_values = np.linspace(1, 20, 20)  
-plot_bump_width_vs_W1(W1_values, L, N, M, s, threshold=0.01)

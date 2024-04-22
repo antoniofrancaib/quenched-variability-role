@@ -10,7 +10,6 @@ def nonlinearity(x):
     
     return phi_x
 
-
 def derivative_nonlinearity(x):
     phi_x_prime = np.zeros_like(x)
     phi_x_prime[(x >= 0) & (x <= 1)] = 2 * x[(x >= 0) & (x <= 1)]    
@@ -91,7 +90,7 @@ class Ring:
         return weights_matrix  
 
 
-    def simulate_dynamics(self, external_input, initial_activity_function, t_span=(0, 30), t_steps=400):
+    def simulate_dynamics(self, external_input, initial_activity_function, t_span=(0, 20000), t_steps=20000):
             initial_profile = initial_activity_function(self.theta)
 
             def dRdt(t, R):
@@ -103,25 +102,21 @@ class Ring:
 
             return dynamics 
     
-    def plot_dynamics(self):
-            T, Y = np.meshgrid(self.dynamics.t, self.theta)
+    def plot_dynamics(self, ax):
+        T, Y = np.meshgrid(self.dynamics.t, self.theta)
+        c = ax.pcolormesh(T, Y, self.dynamics.y, shading='auto', cmap='viridis')
+        plt.colorbar(c, ax=ax, label='Activity Level')  # Changed to plt.colorbar to fetch the current figure implicitly
+        ax.set_xlabel('Time')
+        ax.set_ylabel('Neuron Phase')
+        ax.set_title('Neuron Activity Over Time by Phase')
 
-            plt.figure(figsize=(10, 6))
-            c = plt.pcolormesh(T, Y, self.dynamics.y, shading='auto', cmap='viridis')
-            plt.colorbar(c, label='Activity Level')
-            plt.xlabel('Time')
-            plt.ylabel('Neuron Phase')
-            plt.title('Neuron Activity Over Time by Phase')
-            plt.show()
+    def plot_state(self, ax, timestep=-1):
+        ax.plot(self.theta, self.dynamics.y[:, timestep], label='Neuron Activity at Final Time Step')
+        ax.set_xlabel('Neuron Phase')
+        ax.set_ylabel('Activity Level')
+        ax.set_title(f'Neuron Activity by Phase at Time Step {timestep}')
+        ax.legend()
 
-    def plot_final_state(self):
-            plt.figure(figsize=(10, 6))  
-            plt.plot(self.theta, self.dynamics.y[:, -1], label='Neuron Activity at Final Time Step')
-            plt.xlabel('Neuron Phase')
-            plt.ylabel('Activity Level')
-            plt.title('Neuron Activity by Phase at Final Time Step')
-            plt.legend()
-            plt.show()
     
     def calculate_bump_amplitude(self):
-        return np.max(self.dynamics.y[:, -1]) 
+        return np.max(self.dynamics.y[:, -1]) - np.min(self.dynamics.y[:, -1]) 
