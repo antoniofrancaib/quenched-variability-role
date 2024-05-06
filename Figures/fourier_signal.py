@@ -31,10 +31,8 @@ def fourier_series(theta_values, J):
         fourier_reconstruction += alpha_j * np.cos(j * theta_values) + beta_j * np.sin(j * theta_values)
     return fourier_reconstruction
 
-# Maximum mode J
-J = 1  # Example, up to the 10th mode
+J = 1  
 
-# Calculate the Fourier series up to J-th mode
 reconstructed_signal = fourier_series(theta_values, J)
 
 # Plotting
