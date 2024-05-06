@@ -1,6 +1,15 @@
+import sys
+import os
+
+current_script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_script_dir)
+sys.path.append(parent_dir)
+
+from common_utils import nonlinearity, r_01, r_02, r_03, r_04
+
 import numpy as np
 import matplotlib.pyplot as plt
-from common_utils import nonlinearity, r_01, r_02, r_03, r_04
+
 
 w0 = 5
 I0 = 0.5

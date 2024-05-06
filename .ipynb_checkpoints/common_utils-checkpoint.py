@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
 from scipy.integrate import solve_ivp
+import math 
 
 def nonlinearity(x):
     phi_x = np.zeros_like(x)
@@ -117,6 +118,18 @@ class Ring:
         ax.set_title(f'Neuron Activity by Phase at Time Step {timestep}')
         ax.legend()
 
-    
+    def plot_timetrace(self, ax, phase=None):
+
+        if phase is None:
+            index = len(self.theta) // 2
+        else:
+            index = np.argmin(np.abs(self.theta - phase))
+
+        ax.plot(self.dynamics.t, self.dynamics.y[index, :], label=f'Activity at Phase {self.theta[index]:.2f}')
+        ax.set_xlabel('Time')
+        ax.set_ylabel('Activity Level')
+        ax.set_title(f'Time Trace of Neuron Activity at Phase {self.theta[index]:.2f}')
+        ax.legend()
+
     def calculate_bump_amplitude(self):
-        return np.max(self.dynamics.y[:, -1]) 
+        return np.max(self.dynamics.y[:, -1]) - np.min(self.dynamics.y[:, -1]) 
