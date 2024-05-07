@@ -95,7 +95,7 @@ def select_and_solve(w0, r_filtered, I_0, func):
     t_eval = np.linspace(t_span[0], t_span[1], 2000)
         
     for w0_val in w0_selected:
-        r0 = [func(w0_val, I_0)+0.1] 
+        r0 = [func(w0_val, I_0)] # HERE: check stability by adding 0.01
         sol = solve_ivp(dr_dt, t_span, r0, args=(w0_val, I_0), t_eval=t_eval, method='RK45')
         r_num.append(sol.y[0, -1])
         
