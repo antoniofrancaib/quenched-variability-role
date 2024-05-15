@@ -22,7 +22,7 @@ beta_2_sq_numerical = []
 mean_alpha_1_2_numerical = []
 mean_alpha_1_3_numerical = []
 
-num_trials = 1000
+num_trials = 100000
 for C in C_values:
     alpha_1_sq, beta_1_sq = mean_coefficient_products(1, 0, N, num_trials, A, B, C)
     alpha_2_sq, beta_2_sq = mean_coefficient_products(2, 0, N, num_trials, A, B, C)
@@ -55,8 +55,8 @@ plt.scatter(C_values, mean_alpha_1_2_numerical, color='b', marker='o')
 plt.plot(C_values, analytical_mean_product_1_3, label=r'$\langle \alpha_1 \alpha_3 \rangle$', linestyle='-', color='y')
 plt.scatter(C_values, mean_alpha_1_3_numerical, color='y', marker='o')
 plt.xlabel('C')
-plt.ylabel('Fourier Coefficients Squared')
-plt.title('Comparison of Numerical and Theoretical Fourier Coefficients')
+plt.ylabel('Mean Product of Fourier Coefficients')
+plt.title('Comparison of Numerical and Analytical Mean Product of Fourier Coefficients')
 plt.legend()
 plt.grid(True)
 plt.show()

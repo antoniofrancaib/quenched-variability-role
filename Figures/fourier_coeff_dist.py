@@ -1,3 +1,10 @@
+import sys
+import os
+
+current_script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_script_dir)
+sys.path.append(parent_dir)
+
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import norm
@@ -6,7 +13,7 @@ A = 1
 B = 0
 C = 1  
 N = 64
-num_trials = 1000000
+num_trials = 10000
 
 
 V = lambda theta, A, B, C: A + B * np.cos(theta) + C * np.cos(theta)**2

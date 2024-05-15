@@ -11,8 +11,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-w0 = 5
-I0 = 0.5
+w0 = -2
+I0 = 0.2
 
 response_functions = [
     (r_01, 'red', '01'),

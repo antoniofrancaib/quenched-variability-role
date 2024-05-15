@@ -1,15 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Define the potential function V
 def V(theta, A, B, C):
     return A + B * np.cos(theta) + C * np.cos(theta)**2
 
-# Calculate delta_W
 def delta_W(theta, A, B, C):
     return np.sqrt(V(theta, A, B, C)) * np.random.randn(len(theta))
 
-# Function to calculate Fourier coefficients
 def fourier_coefficients(j, theta_values, delta_W_values):
     cos_terms = np.cos(j * theta_values)
     sin_terms = np.sin(j * theta_values)
@@ -31,7 +28,7 @@ def fourier_series(theta_values, J):
         fourier_reconstruction += alpha_j * np.cos(j * theta_values) + beta_j * np.sin(j * theta_values)
     return fourier_reconstruction
 
-J = 1  
+J = 10  
 
 reconstructed_signal = fourier_series(theta_values, J)
 

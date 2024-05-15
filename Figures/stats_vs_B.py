@@ -20,7 +20,7 @@ alpha_2_sq_numerical = []
 mean_alpha_1_2_numerical = []
 mean_alpha_1_3_numerical = []
 
-num_trials = 10000
+num_trials = 100000
 for B in B_values:
     alpha_1_sq, beta_1_sq = mean_coefficient_products(1, 0, N, num_trials, A, B, C)
     alpha_2_sq, _ = mean_coefficient_products(2, 0, N, num_trials, A, B, C)

@@ -1,20 +1,30 @@
+import sys
+import os
+
+current_script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_script_dir)
+sys.path.append(parent_dir)
+
 import numpy as np
 import matplotlib.pyplot as plt
 from common_utils import Ring, derivative_nonlinearity, r_02
 
 L = np.pi
 N = 256
-w0 = -1
-I_0 = 0.1
+w0 = -10
+I_0 = 0.9
+
+T = {'t_span': (0, 5000), 't_steps': 5000}
 
 critical_w1 = 2 / derivative_nonlinearity(w0 * r_02(w0, I_0) + I_0)
-w1 = critical_w1 - 0.5
+w1 = critical_w1 + 0.5
 
 epsilon = 0.015
 perturbation = lambda theta: r_02(w0, I_0) + epsilon * np.cos(theta)
+
 W = lambda delta_theta: w0 + w1 * np.cos(delta_theta)
 
-ring = Ring(L, N, W, I_0, perturbation)
+ring = Ring(L, T, N, W, I_0, perturbation)
 fig, ax = plt.subplots(1, 2, figsize=(16, 6))
 
 ring.plot_state(ax[0])

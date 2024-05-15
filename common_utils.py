@@ -34,6 +34,19 @@ def fourier_coefficients(j, theta_values, delta_W_values):
     beta_j = np.trapz(delta_W_values * sin_terms, theta_values) / (2 * np.pi)
     return alpha_j, beta_j
 
+def fourier_kernel(theta_values, J, A, B, C, w0, w1):
+    V = A + B * np.cos(theta_values) + C * np.cos(theta_values)**2
+    delta_W_values = np.sqrt(V) * np.random.randn(len(theta_values))
+    
+    fourier_reconstruction = np.zeros_like(theta_values)
+    
+    for j in range(1, J + 1):
+        alpha_j, beta_j = fourier_coefficients(j, theta_values, delta_W_values)
+        fourier_reconstruction += alpha_j * np.cos(j * theta_values) + beta_j * np.sin(j * theta_values)
+
+    W = lambda delta_theta: w0 + w1 * np.cos(delta_theta) + np.interp(delta_theta, theta_values, fourier_reconstruction)
+    return W
+
 def mean_coefficient_products(j, delta, N=64, num_trials=10000, A=1, B=0.0, C=0):
     V = lambda theta, A, B, C: A + B * np.cos(theta) + C * np.cos(theta)**2
     delta_W = lambda theta, A, B, C: np.sqrt(V(theta, A, B, C)) * np.random.randn(len(theta))
@@ -164,6 +177,7 @@ class Ring:
         ax.legend()
 
     def calculate_bump_amplitude(self):
+        # fft 
         return np.max(self.dynamics.y[:, -1]) - np.min(self.dynamics.y[:, -1]) 
     
 
