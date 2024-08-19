@@ -7,7 +7,7 @@ sys.path.append(parent_dir)
 
 import numpy as np
 import matplotlib.pyplot as plt
-from common_utils import Ring, derivative_nonlinearity, r_02, multi_peak_perturbation
+from src.utils.common_utils import Ring, derivative_nonlinearity, r_02, multi_peak_perturbation
 
 import numpy as np
 

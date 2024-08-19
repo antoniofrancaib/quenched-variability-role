@@ -88,7 +88,7 @@ def multi_peak_perturbation(theta, r_0, phases, epsilon=0.005):
     
     return r_0 + perturbation  
 
-def fixed_point_solver(w0, I0, initial_guess = 0.1): # NUMERICAL APPROACH
+def fixed_point_solver(w0, I0, initial_guess = 0.1): 
 
     equation = lambda r: r - nonlinearity(w0 * r + I0)
     r0_intersection = fsolve(equation, initial_guess)

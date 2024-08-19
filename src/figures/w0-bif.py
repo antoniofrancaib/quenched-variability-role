@@ -7,7 +7,7 @@ sys.path.append(parent_dir)
 
 import numpy as np
 import matplotlib.pyplot as plt
-from common_utils import r_01, r_02, r_03, r_04, apply_mask, select_and_solve, derivative_nonlinearity
+from src.utils.common_utils import r_01, r_02, r_03, r_04, apply_mask, select_and_solve, derivative_nonlinearity
 
 I0 = 0.75
 N = 10000

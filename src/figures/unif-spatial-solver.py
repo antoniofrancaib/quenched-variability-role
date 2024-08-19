@@ -8,7 +8,7 @@ sys.path.append(parent_dir)
 import numpy as np
 from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
-from common_utils import nonlinearity, r_01, r_02, r_03, r_04
+from src.utils.common_utils import nonlinearity, r_01, r_02, r_03, r_04
 
 def phi(x, r0=10, beta=5.0):
     return r0 / (1 + np.exp(-beta * x))

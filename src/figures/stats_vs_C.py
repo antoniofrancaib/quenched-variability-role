@@ -5,7 +5,7 @@ current_script_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_script_dir)
 sys.path.append(parent_dir)
 
-from common_utils import mean_coefficient_products
+from src.utils.common_utils import mean_coefficient_products
 
 import numpy as np
 import matplotlib.pyplot as plt

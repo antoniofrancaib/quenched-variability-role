@@ -7,7 +7,7 @@ sys.path.append(parent_dir)
 
 import numpy as np
 import matplotlib.pyplot as plt
-from common_utils import Ring, derivative_nonlinearity, r_02
+from src.utils.common_utils import Ring, derivative_nonlinearity, r_02
 from scipy.stats import norm, sem
 
 

@@ -8,7 +8,7 @@ sys.path.append(parent_dir)
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import rayleigh, cauchy
-from common_utils import fourier_coefficients
+from src.utils.common_utils import fourier_coefficients
 
 A = 1
 B = 0
