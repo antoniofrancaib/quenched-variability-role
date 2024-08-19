@@ -21,14 +21,12 @@ Several interactive Jupyter notebooks are provided to explore:
 - Effects of quenched variability on network dynamics
 - Formation and properties of bump attractors
 
-## Contact
-
-Antonio Franca - [Your Email]
-
-Project Link: [Your GitHub Repository URL]
-
 ## Acknowledgments
 
 - Dr. Daniele Avitabile & Dr. Alexander Roxin (Supervisors)
 - Dr. Bob Planqué (Second examiner)
 - Department of Mathematics, Faculty of Sciences, VU University Amsterdam
+
+## Contact
+
+Antonio Franca - antoniofrancaib@gmail.com
