@@ -1,3 +1,10 @@
+import sys
+import os
+
+current_script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_script_dir)
+sys.path.append(parent_dir)
+
 import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt
@@ -5,30 +12,28 @@ from common_utils import Ring, derivative_nonlinearity, r_02
 
 
 L = np.pi
-N = 256
-T = {'t_span': (0, 10000), 't_steps': 10000}
+N = 64
+
+T = {'t_span': (0, 5000), 't_steps': 5000}
 
 w0 = -10
 I_0 = 0.9
 
-A = 0.1
+A = 100.0
 B = 0.0 
 C = 0.0
 
-M = 60  
-s = 0.1  
-kappa = s*M
-
-R = np.sqrt((2*np.pi/N)*(A+(C/2)))#* (np.sqrt(s*M)/kappa)
+R = np.sqrt((2*np.pi/N)*(A+(C/2)))
+R_1 = np.sqrt((np.pi * (2*A+C) / (4*N)))
 
 r_0 = r_02(w0, I_0)
-critical_w1 = 2 / derivative_nonlinearity(w0 * r_0 + I_0) - R
+critical_w1 = 2 / derivative_nonlinearity(w0 * r_0 + I_0) - R_1
 wout_critical_w1 = 2 / derivative_nonlinearity(w0 * r_0 + I_0) 
 print(critical_w1)
 
 amplitudes = []
 delta = 0.5
-w1_values = np.linspace(critical_w1 -  delta, critical_w1 + delta, 30)
+w1_values = np.linspace(1, 12, 5)
 
 epsilon = 0.005
 perturbation = lambda theta: r_0 + epsilon * np.cos(theta)
@@ -37,15 +42,15 @@ V = lambda theta: A + B * np.cos(theta) + C * np.cos(theta)**2
     
 delta_W = lambda theta: np.sqrt(V(theta)) * np.random.randn()
 
-num_simulations = 20
+num_simulations = 10
 all_simulation_amplitudes = []
 
 
 for w1 in w1_values:
     simulation_amplitudes = []
     for _ in range(num_simulations):
-        W = lambda delta_theta: w0 + w1 * np.cos(delta_theta) + delta_W(delta_theta)
-        ring = Ring(L, T, N, W, I_0, perturbation)  
+        W = lambda delta_theta: w0 + w1 * np.cos(delta_theta)
+        ring = Ring(L, T, N, W, delta_W, I_0, perturbation, use_quenched_variability=True)  
         amplitude = ring.calculate_bump_amplitude()  
         simulation_amplitudes.append(amplitude)
     

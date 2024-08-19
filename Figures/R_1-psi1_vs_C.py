@@ -24,6 +24,8 @@ w0 = -10
 I_0 = 0.9
 
 C_values = np.linspace(0, 100, 1000)  
+R_1 = np.sqrt((np.pi * (2*A+C_values) / (4*N)))
+
 variances = []
 
 for C in C_values:
@@ -36,6 +38,7 @@ for C in C_values:
 
 plt.figure(figsize=(10, 6))
 plt.plot(C_values, variances, label='Variance of $\psi_1$')
+plt.plot(C_values, R_1, label='$< R_1 >$')
 plt.xlabel('C')
 plt.ylabel('Variance')
 plt.title('Variance of $\psi_1$ as a Function of C')

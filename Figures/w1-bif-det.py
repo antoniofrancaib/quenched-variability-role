@@ -22,15 +22,17 @@ r_0 = r_02(w0, I_0)
 critical_w1 = 2 / derivative_nonlinearity(w0 * r_0 + I_0)
 
 amplitudes = []
-delta = 0.2
-w1_values = np.linspace(critical_w1-delta, critical_w1+delta, 30)
+delta = 2
+w1_values = np.linspace(critical_w1-delta, critical_w1+delta, 100)
 
 epsilon = 0.005
 perturbation = lambda theta: r_0 + epsilon * np.cos(theta)
 
+delta_W = 0
+
 for w1 in w1_values:
     W = lambda delta_theta: w0 + w1 * np.cos(delta_theta) 
-    ring = Ring(L, T, N, W, I_0, perturbation)  
+    ring = Ring(L, T, N, W, delta_W, I_0, perturbation, use_quenched_variability=False)  
     amplitude = ring.calculate_bump_amplitude()  
     amplitudes.append(amplitude)
 
@@ -43,7 +45,3 @@ plt.title(f'Bifurcation Diagram for $W_0=${w0} and $I_0=${I_0}')
 plt.grid(True)  
 plt.legend() 
 plt.show()  
-
-# bif diagram con y sin ruido 
-# exp con varias perturbaciones y ver las preferencias de hotspots, pensar una manera de cuantificar la estabilidad 
-# fft 

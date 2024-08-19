@@ -13,7 +13,7 @@ A = 1
 B = 0
 C = 1  
 N = 64
-num_trials = 10000
+num_trials = 1000
 
 
 V = lambda theta, A, B, C: A + B * np.cos(theta) + C * np.cos(theta)**2

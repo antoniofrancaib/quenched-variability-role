@@ -12,7 +12,7 @@ from common_utils import fourier_coefficients
 
 A = 1
 B = 0
-C = 0
+C = 100
 N = 64
 num_trials = 100000
 
@@ -30,7 +30,13 @@ betas = []
 theta_values = np.linspace(-np.pi, np.pi, N)
 for _ in range(num_trials):
     delta_W_values = delta_W(theta_values, A, B, C)
-    alpha_j, beta_j = fourier_coefficients(2, theta_values, delta_W_values)
+
+    """fft_coefficients = np.fft.fft(delta_W_values)
+    alpha_j = np.real(fft_coefficients[1]) * 2 / N
+    beta_j = -np.imag(fft_coefficients[1]) * 2 / N
+    R_1 = np.sqrt(alpha_j**2 + beta_j**2)
+    psi_1 = np.arctan2(beta_j, alpha_j)"""
+    alpha_j, beta_j = fourier_coefficients(1, theta_values, delta_W_values)
     alphas.append(alpha_j)
     betas.append(beta_j)
 

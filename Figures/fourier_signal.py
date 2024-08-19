@@ -14,13 +14,11 @@ def fourier_coefficients(j, theta_values, delta_W_values):
     beta_j = np.trapz(delta_W_values * sin_terms, theta_values) / (2 * np.pi)
     return alpha_j, beta_j
 
-# Parameters
-A, B, C = 1, 0.5, 0.3  # Example coefficients for V
-N = 64  # Number of theta points
+A, B, C = 1, 0.5, 0.3  
+N = 64  
 theta_values = np.linspace(0, 2 * np.pi, N)
 delta_W_values = delta_W(theta_values, A, B, C)
 
-# Fourier series reconstruction
 def fourier_series(theta_values, J):
     fourier_reconstruction = np.zeros_like(theta_values)
     for j in range(1, J+1):
