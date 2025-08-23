@@ -1,6 +1,6 @@
 # The Role of Quenched Variability in Enhancing Memory Storage in Neuronal Networks
 
-This repository contains the code and resources for my Bachelor's thesis in Mathematics at VU University Amsterdam.
+I would like to thank my supervisors, Dr. Daniele Avitabile and Dr. Alexander Roxin, for their guidance during this investigation.
 
 ## Abstract
 
@@ -20,12 +20,6 @@ Several interactive Jupyter notebooks are provided to explore:
 - Bifurcation diagrams for different parameter values
 - Effects of quenched variability on network dynamics
 - Formation and properties of bump attractors
-
-## Acknowledgments
-
-- Dr. Daniele Avitabile & Dr. Alexander Roxin (Supervisors)
-- Dr. Bob Planqué (Second examiner)
-- Department of Mathematics, Faculty of Sciences, VU University Amsterdam
 
 ## Contact
 
